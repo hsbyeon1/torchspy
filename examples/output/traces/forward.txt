@@ -1,0 +1,10 @@
+embed
+blocks.0.attn.qkv
+blocks.0.attn.proj
+blocks.0.mlp.fc1
+blocks.0.mlp.fc2
+blocks.1.attn.qkv
+blocks.1.attn.proj
+blocks.1.mlp.fc1
+blocks.1.mlp.fc2
+head

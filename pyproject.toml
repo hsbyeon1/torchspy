@@ -1,0 +1,238 @@
+[project]
+name = "torchspy"
+version = "0.0.1"
+description = "A debug tool for pytorch tensors"
+authors = [{ name = "Hyeonsung Byeon", email = "hsbyeon1@snu.ac.kr" }]
+readme = "README.md"
+keywords = ['python']
+requires-python = ">=3.12,<4.0"
+dependencies = [
+    "torch>=2.9.1",
+    "pytorch-lightning"
+]
+
+[project.urls]
+Homepage = "https://hsbyeon1.github.io/torchspy/"
+Repository = "https://github.com/hsbyeon1/torchspy"
+Documentation = "https://hsbyeon1.github.io/torchspy/"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+    "pre-commit>=4.5.0",
+    "tox-uv>=1.29.0",
+    "mypy>=1.19.0",
+    "pytest-cov>=7.0.0",
+    "ruff>=0.14.8",
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.7.0",
+    "mkdocstrings[python]>=1.0.0",
+    "torchspy",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/torchspy"]
+
+[tool.uv.sources]
+torch = { index = "pytorch" }
+torchspy = { workspace = true }
+
+[[tool.uv.index]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+[tool.uv.workspace]
+members = [
+    ".",
+]
+
+[tool.mypy]
+files = ["src/torchspy/"]
+mypy_path = "$MYPY_CONFIG_FILE_DIR/src"
+
+check_untyped_defs = true
+disallow_any_explicit = false
+disallow_any_generics = false
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_unreachable = true
+
+allow_redefinition = true
+local_partial_types = true
+disable_error_code = ["import-untyped", "no-redef", "override"]
+
+show_error_context = true
+show_column_numbers = true
+
+[[tool.mypy.overrides]]
+module = ["rdkit.*", "lightning.*", "Bio.*", "networkx.*"]
+
+follow_imports = "skip"
+follow_imports_for_stubs = true
+
+[[tool.mypy.overrides]]
+module = ["deepspeed.*", "flash_attn.*"]
+
+ignore_missing_imports = true
+
+[tool.pyright]
+include = ["src", "tests", "scripts"]
+pythonVersion = "3.12"
+pythonPlatform = "Linux"
+
+strictParameterNoneValue = false
+
+reportGeneralTypeIssues = "information"
+reportUnusedImport = "warning"
+reportUnusedClass = "warning"
+reportUnusedFunction = "warning"
+reportUnusedVariable = "warning"
+reportDuplicateImport = "warning"
+reportWildcardImportFromLibrary = "none"
+reportOptionalSubscript = "warning"
+reportOptionalMemberAccess = "warning"
+reportOptionalCall = "warning"
+reportOptionalIterable = "warning"
+reportOptionalContextManager = "warning"
+reportOptionalOperand = "warning"
+reportPrivateImportUsage = "none"
+reportIncompatibleMethodOverride = "none"
+reportIncompatibleVariableOverride = "warning"
+reportInconsistentConstructor = "warning"
+reportOverlappingOverload = "warning"
+reportUninitializedInstanceVariable = "warning"
+reportInvalidStringEscapeSequence = "error"
+reportUnnecessaryIsInstance = "warning"
+reportUnnecessaryCast = "warning"
+reportUnnecessaryComparison = "warning"
+reportUnnecessaryContains = "warning"
+reportAssertAlwaysTrue = "warning"
+reportSelfClsParameterName = "warning"
+reportImplicitStringConcatenation = "information"
+reportInvalidStubStatement = "warning"
+reportIncompleteStub = "warning"
+reportUnnecessaryTypeIgnoreComment = "none"
+reportMatchNotExhaustive = "warning"
+reportShadowedImports = "warning"
+reportPossiblyUnboundVariable = "none"
+
+# Covered by mypy
+reportAssignmentType = "none"
+reportAttributeAccessIssue = "none"
+reportArgumentType = "none"
+reportCallIssue = "none"
+reportReturnType = "none"
+reportAny = "none"
+reportRedeclaration = "none"
+reportImplicitOverride = "none"
+reportUnusedCallResult = "none"
+reportMissingTypeArgument = "none"
+reportMissingParameterType = "none"
+reportUnknownArgumentType = "none"
+reportUnknownParameterType = "none"
+reportUnknownVariableType = "none"
+reportUnknownMemberType = "none"
+reportUnknownLambdaType = "none"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "regression",
+]
+
+[tool.ruff]
+src = ["src"]
+extend-exclude = ["conf.py", "examples"]
+lint.extend-select = [
+    "W6",
+    "ISC",
+    "ICN",
+    "LOG",
+    "G",
+    "T20",
+    "I",
+    "N80",
+    "S102",
+    "S108",
+    "S306",
+    "S307",
+    "S60",
+    "B",
+    "A",
+    "PT",
+    "PTH",
+    "PLE",
+    "PLW",
+    "NPY",
+    "RUF",
+]
+lint.ignore = [
+    "E74",
+    "F403",
+    "F405",
+    "N803",
+    "N806",
+    "S603",
+    "S607",
+    "B008",
+    "B905",
+    "PTH123",
+    "PLW2901",
+    "RUF005",
+    "RUF100",  # for upstream compatibility
+    "NPY002",
+]
+
+[tool.ruff.lint.pyupgrade]
+# Preserve types, even if a file imports `from __future__ import annotations`(https://github.com/astral-sh/ruff/issues/5434)
+keep-runtime-typing = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+no-lines-before = ["local-folder"]
+
+[tool.ruff.lint.flake8-import-conventions]
+banned-from = [
+    "torch.nn.functional",
+]
+
+[tool.ruff.lint.flake8-import-conventions.extend-aliases]
+"numpy.linalg" = "LA"
+"torch.nn.functional" = "F"
+"pytorch_lightning" = "pl"
+
+
+[tool.ruff.lint.per-file-ignores]
+"**/__init__.py" = [
+    "F401", # Imported but unused
+    "F403", # Wildcard imports
+]
+"docs/**" = [
+    "INP001", # Requires __init__.py but folder is not a package.
+]
+"scripts/**" = [
+    "INP001", # Requires __init__.py but folder is not a package.
+]
+"tests/**" = [
+    "INP001", # Requires __init__.py but folder is not a package.
+    "S101"
+]
+
+[tool.ruff.format]
+preview = true
+
+[tool.coverage.report]
+skip_empty = true
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
