@@ -150,7 +150,7 @@ markers = [
 
 [tool.ruff]
 src = ["src"]
-extend-exclude = ["conf.py", "examples"]
+extend-exclude = ["conf.py", "examples/output/**"]
 lint.extend-select = [
     "W6",
     "ISC",

@@ -1,3 +1,4 @@
+exclude: '^examples/output/.*'
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: "v6.0.0"
@@ -12,7 +13,6 @@ repos:
         exclude: ^.devcontainer/devcontainer.json
         args: [--autofix, --no-sort-keys]
       - id: end-of-file-fixer
-        exclude: '^examples/output/.*'
       - id: trailing-whitespace
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
