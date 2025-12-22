@@ -1393,7 +1393,7 @@ saver.register_modules(model, target_classes=(AttentionLayer,))</p>
     <span class="k">def</span><span class="w"> </span><span class="nf">register_modules</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">model</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span>
-        <span class="n">target_classes</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+        <span class="n">target_classes</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,),</span>
         <span class="n">target_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">exclude_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -1568,7 +1568,7 @@ saver.register_modules(model, target_classes=(AttentionLayer,))</p>
 
 
 <h3 id="torchspy.saver.TensorSaver.register_modules" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">register_modules</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">target_classes</span><span class="o">=</span><span class="p">(),</span> <span class="n">target_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_names</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">register_modules</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">target_classes</span><span class="o">=</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,),</span> <span class="n">target_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_names</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#torchspy.saver.TensorSaver.register_modules" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -1621,7 +1621,7 @@ that are instances of these classes.</p>
               </div>
             </td>
             <td>
-                  <code>()</code>
+                  <code>(<span title="torch.nn.Module">Module</span>,)</code>
             </td>
           </tr>
           <tr class="doc-section-item">
@@ -1695,7 +1695,7 @@ contains any of these substrings.</p>
 <span class="normal">89</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">register_modules</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">model</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span>
-    <span class="n">target_classes</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+    <span class="n">target_classes</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,),</span>
     <span class="n">target_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">exclude_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -2914,7 +2914,7 @@ tracer.register_hooks(model, target_classes=(nn.Linear, nn.MultiheadAttention))<
     <span class="k">def</span><span class="w"> </span><span class="nf">register_hooks</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">model</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span>
-        <span class="n">target_classes</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+        <span class="n">target_classes</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,),</span>
         <span class="n">target_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">exclude_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -2926,7 +2926,7 @@ tracer.register_hooks(model, target_classes=(nn.Linear, nn.MultiheadAttention))<
 <span class="sd">        Args:</span>
 <span class="sd">            model (nn.Module): The root model to inspect.</span>
 <span class="sd">            target_classes (tuple[Type[nn.Module], ...]): Register hooks on</span>
-<span class="sd">                modules that are instances of these classes.</span>
+<span class="sd">                modules that are instances of these classes. Defaults to (nn.Module,).</span>
 <span class="sd">            target_names (list[str] | None): Register hooks on modules whose</span>
 <span class="sd">                path contains any of these substrings.</span>
 <span class="sd">            exclude_names (list[str] | None): Exclude modules whose path</span>
@@ -3119,7 +3119,7 @@ tracer.register_hooks(model, target_classes=(nn.Linear, nn.MultiheadAttention))<
 
 
 <h3 id="torchspy.tracer.CallTracer.register_hooks" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">register_hooks</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">target_classes</span><span class="o">=</span><span class="p">(),</span> <span class="n">target_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_names</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">register_hooks</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">target_classes</span><span class="o">=</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,),</span> <span class="n">target_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_names</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#torchspy.tracer.CallTracer.register_hooks" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -3168,11 +3168,11 @@ hooks on modules that match the specified criteria.</p>
             <td>
               <div class="doc-md-description">
                 <p>Register hooks on
-modules that are instances of these classes.</p>
+modules that are instances of these classes. Defaults to (nn.Module,).</p>
               </div>
             </td>
             <td>
-                  <code>()</code>
+                  <code>(<span title="torch.nn.Module">Module</span>,)</code>
             </td>
           </tr>
           <tr class="doc-section-item">
@@ -3248,7 +3248,7 @@ contains any of these substrings.</p>
 <span class="normal">90</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">register_hooks</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">model</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span>
-    <span class="n">target_classes</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+    <span class="n">target_classes</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,),</span>
     <span class="n">target_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">exclude_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -3260,7 +3260,7 @@ contains any of these substrings.</p>
 <span class="sd">    Args:</span>
 <span class="sd">        model (nn.Module): The root model to inspect.</span>
 <span class="sd">        target_classes (tuple[Type[nn.Module], ...]): Register hooks on</span>
-<span class="sd">            modules that are instances of these classes.</span>
+<span class="sd">            modules that are instances of these classes. Defaults to (nn.Module,).</span>
 <span class="sd">        target_names (list[str] | None): Register hooks on modules whose</span>
 <span class="sd">            path contains any of these substrings.</span>
 <span class="sd">        exclude_names (list[str] | None): Exclude modules whose path</span>
@@ -3655,7 +3655,12 @@ registration that is shared between TensorSaver and CallTracer.</p>
 <span class="normal">77</span>
 <span class="normal">78</span>
 <span class="normal">79</span>
-<span class="normal">80</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">BaseDebugger</span><span class="p">:</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">BaseDebugger</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for tensor debugging utilities.</span>
 
 <span class="sd">    Provides common functionality for directory management and module</span>
@@ -3702,12 +3707,17 @@ registration that is shared between TensorSaver and CallTracer.</p>
 <span class="sd">            bool: True if the module should be registered.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">should_register</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">target_classes</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">target_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">t</span> <span class="ow">in</span> <span class="n">module_path</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">target_names</span><span class="p">):</span>
-            <span class="n">should_register</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">target_classes</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">target_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">t</span> <span class="ow">in</span> <span class="n">module_path</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">target_names</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
         <span class="k">if</span> <span class="n">exclude_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">t</span> <span class="ow">in</span> <span class="n">module_path</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">exclude_names</span><span class="p">):</span>
-            <span class="n">should_register</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">return</span> <span class="n">should_register</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="kc">True</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_module_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the registered path for a module.</span>
@@ -3898,17 +3908,17 @@ registration that is shared between TensorSaver and CallTracer.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/torchspy/_base.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">70</span>
-<span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span>
-<span class="normal">75</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">75</span>
 <span class="normal">76</span>
 <span class="normal">77</span>
 <span class="normal">78</span>
 <span class="normal">79</span>
-<span class="normal">80</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_module_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_module_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the registered path for a module.</span>
 
 <span class="sd">    Args:</span>
