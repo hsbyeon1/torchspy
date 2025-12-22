@@ -19,6 +19,7 @@ uv add <--editable> /path/to/clone/torchspy
 
 - **TensorSaver**: Save intermediate tensors with `spy_save()` calls
 - **CallTracer**: Record module execution order via forward hooks (no code changes needed)
+- **Trace Graph**: Generate a top-down graph visualization from a saved trace (`scripts/trace_to_graph.py`), with options for squashing repeated layers and pruning leaves.
 - **Context-aware**: Organize saved tensors by prefix (batch/step)
 - **Zero overhead**: `spy_save()` is a no-op outside debug context
 

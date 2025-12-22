@@ -49,3 +49,12 @@
         members:
             - __init__
             - get_module_path
+
+::: torchspy.trace_graph
+    options:
+        show_root_heading: true
+        members:
+            - parse_trace
+            - build_tree
+            - render_graph
+            - save_tree_json
