@@ -11,9 +11,10 @@ import logging
 from pathlib import Path
 
 from torchspy.trace_graph import (
+    apply_graph_render_options,
     build_tree,
+    construct_graph,
     parse_trace,
-    render_graph,
     save_tree_json,
 )
 
@@ -90,14 +91,16 @@ def main(argv: list[str] | None = None) -> int:
         save_tree_json(tree, args.save_json)
         logger.info("Saved JSON to %s", args.save_json)
 
-    dot = render_graph(
+    dot = construct_graph(
         tree,
         show_repetition=args.show_repetition,
         prune_leaves_flag=args.prune_leaves,
         squash_name=args.squash_name,
-        dpi=args.dpi,
-        figwidth=args.figwidth,
-        figheight=args.figheight,
+    )
+
+    # Apply rendering options in the CLI so the graph construction remains
+    apply_graph_render_options(
+        dot, dpi=args.dpi, figwidth=args.figwidth, figheight=args.figheight
     )
 
     render_path = Path(dot.render(filename=str(out), cleanup=True))

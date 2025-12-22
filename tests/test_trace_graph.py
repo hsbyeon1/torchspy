@@ -4,7 +4,14 @@ from pathlib import Path
 
 import pytest
 
-from torchspy.trace_graph import build_tree, parse_trace, prune_leaves, save_tree_json
+from torchspy.trace_graph import (
+    apply_graph_render_options,
+    build_tree,
+    construct_graph,
+    parse_trace,
+    prune_leaves,
+    save_tree_json,
+)
 
 SAMPLE_TRACE = """
 initial_embedder.token_embedder.input_embedder.encoder.atom_encoder.diffusion_transformer.layers.0.adaln.a_norm
@@ -80,10 +87,21 @@ def test_render_and_save_json(tmp_trace: Path, tmp_path: Path):
     import importlib as _il
 
     _tg = _il.import_module("torchspy.trace_graph")
-    dot = _tg.render_graph(tree, show_repetition=True, prune_leaves_flag=True)
+    dot = _tg.construct_graph(tree, show_repetition=True, prune_leaves_flag=True)
     render_path = Path(dot.render(filename=str(out), cleanup=True))
     assert render_path.exists()
     assert render_path.suffix == ".png"
+
+
+def test_apply_graph_render_options_sets_attributes(tmp_trace: Path):
+    tree = build_tree(parse_trace(tmp_trace))
+    dot = construct_graph(tree, show_repetition=True, prune_leaves_flag=True)
+    apply_graph_render_options(dot, dpi=200, figwidth=6.0, figheight=4.0)
+    # Attributes are reflected in the Dot source; check for expected substrings
+    src = dot.source
+    assert ("dpi=200" in src) or ('dpi="200"' in src)
+    assert ('size="6.0,4.0!"' in src) or ("size=6.0,4.0!" in src)
+    assert "ratio=fill" in src
 
 
 def test_render_with_size_and_dpi(tmp_trace: Path, tmp_path: Path):
@@ -102,14 +120,12 @@ def test_render_with_size_and_dpi(tmp_trace: Path, tmp_path: Path):
     import importlib as _il
 
     _tg = _il.import_module("torchspy.trace_graph")
-    dot = _tg.render_graph(
+    dot = _tg.construct_graph(
         tree,
         show_repetition=True,
         prune_leaves_flag=True,
-        dpi=200,
-        figwidth=6.0,
-        figheight=4.0,
     )
+    _tg.apply_graph_render_options(dot, dpi=200, figwidth=6.0, figheight=4.0)
     render_path = Path(dot.render(filename=str(out), cleanup=True))
     assert render_path.exists()
     assert render_path.suffix == ".png"

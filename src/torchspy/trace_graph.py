@@ -175,40 +175,23 @@ def _collect_nodes_for_graph(
     return items
 
 
-def render_graph(
+def construct_graph(
     tree: Node,
     show_repetition: bool = True,
     prune_leaves_flag: bool = True,
     squash_name: bool = False,
-    dpi: int = 150,
-    figwidth: Optional[float] = None,
-    figheight: Optional[float] = None,
 ) -> Digraph:
-    """Build a Graphviz Digraph for the tree and return it to the caller.
+    """Construct a Graphviz Digraph for the tree and return it to the caller.
 
-    The caller is responsible for calling `digraph.render(filename=..., cleanup=True)`
-    to write the image file. This enables the caller (CLI/tests) to decide
-    where and when the file is saved.
+    This function builds the graph structure (nodes and edges) but does NOT
+    set rendering-specific attributes like DPI or size; callers (for example
+    a CLI) should set those attributes before calling `digraph.render(...)`.
     """
     if prune_leaves_flag:
         tree = prune_leaves(tree)
 
     dot = Digraph(format="png")
     dot.attr(rankdir="TB")
-
-    # Apply rendering options
-    try:
-        dot.graph_attr["dpi"] = str(dpi)
-        if figwidth is not None or figheight is not None:
-            w = "" if figwidth is None else str(figwidth)
-            h = "" if figheight is None else str(figheight)
-            # Use '!' to force Graphviz to respect the size exactly
-            dot.graph_attr["size"] = f"{w},{h}!"
-            dot.graph_attr["ratio"] = "fill"
-    except Exception:
-        # Be explicit: let exceptions propagate in normal flows, but avoid
-        # failing due to graphviz attribute issues in older installations.
-        raise
 
     # Assign stable ids based on first_seen ordering
     node_items = _collect_nodes_for_graph(tree, squash_name, {})
@@ -271,6 +254,49 @@ def render_graph(
                         dot.edge(parent_id, child_id)
                         seen_edges.add(edge)
 
+    return dot
+
+
+def apply_graph_render_options(
+    dot: Digraph,
+    dpi: int = 150,
+    figwidth: Optional[float] = None,
+    figheight: Optional[float] = None,
+) -> None:
+    """Apply DPI and size attributes to an existing Graphviz `Digraph`.
+
+    This keeps rendering concerns separate from graph construction so callers
+    (for example CLIs) can decide when and where to write files.
+    """
+    dot.attr(dpi=str(dpi))
+    if figwidth is not None or figheight is not None:
+        w = "" if figwidth is None else str(figwidth)
+        h = "" if figheight is None else str(figheight)
+        # Use '!' to force Graphviz to respect the size exactly
+        dot.attr(size=f"{w},{h}!", ratio="fill")
+
+
+def render_graph(
+    tree: Node,
+    show_repetition: bool = True,
+    prune_leaves_flag: bool = True,
+    squash_name: bool = False,
+    dpi: int = 150,
+    figwidth: Optional[float] = None,
+    figheight: Optional[float] = None,
+) -> Digraph:
+    """Backward-compatible wrapper that builds the graph and applies render options.
+
+    Prefer using `construct_graph` + `apply_graph_render_options` for clearer
+    separation of concerns; this wrapper remains for convenience and tests.
+    """
+    dot = construct_graph(
+        tree,
+        show_repetition=show_repetition,
+        prune_leaves_flag=prune_leaves_flag,
+        squash_name=squash_name,
+    )
+    apply_graph_render_options(dot, dpi=dpi, figwidth=figwidth, figheight=figheight)
     return dot
 
 
