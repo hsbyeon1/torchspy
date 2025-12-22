@@ -1,0 +1,54 @@
+{
+  "name": "root",
+  "count": 10,
+  "children": [
+    {
+      "name": "embed",
+      "count": 1,
+      "children": []
+    },
+    {
+      "name": "blocks",
+      "count": 8,
+      "children": [
+        {
+          "name": "attn",
+          "count": 4,
+          "children": [
+            {
+              "name": "qkv",
+              "count": 2,
+              "children": []
+            },
+            {
+              "name": "proj",
+              "count": 2,
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "mlp",
+          "count": 4,
+          "children": [
+            {
+              "name": "fc1",
+              "count": 2,
+              "children": []
+            },
+            {
+              "name": "fc2",
+              "count": 2,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "head",
+      "count": 1,
+      "children": []
+    }
+  ]
+}
