@@ -1,44 +1,56 @@
 {
   "name": "root",
-  "count": 10,
+  "count": 0,
+  "indices": [],
   "children": [
     {
       "name": "embed",
-      "count": 1,
+      "count": 0,
+      "indices": [],
       "children": []
     },
     {
       "name": "blocks",
-      "count": 8,
+      "count": 2,
+      "indices": [
+        "0",
+        "1"
+      ],
       "children": [
         {
           "name": "attn",
-          "count": 4,
+          "count": 0,
+          "indices": [],
           "children": [
             {
               "name": "qkv",
-              "count": 2,
+              "count": 0,
+              "indices": [],
               "children": []
             },
             {
               "name": "proj",
-              "count": 2,
+              "count": 0,
+              "indices": [],
               "children": []
             }
           ]
         },
         {
           "name": "mlp",
-          "count": 4,
+          "count": 0,
+          "indices": [],
           "children": [
             {
               "name": "fc1",
-              "count": 2,
+              "count": 0,
+              "indices": [],
               "children": []
             },
             {
               "name": "fc2",
-              "count": 2,
+              "count": 0,
+              "indices": [],
               "children": []
             }
           ]
@@ -47,7 +59,8 @@
     },
     {
       "name": "head",
-      "count": 1,
+      "count": 0,
+      "indices": [],
       "children": []
     }
   ]

@@ -29,8 +29,8 @@ class Node:
     children: Dict[str, "Node"] = field(default_factory=dict)
     count: int = 1  # repetition count for squashed numeric indices
     first_seen: int = 0  # index in trace for stable ordering
-    occurrences: int = 0  # how many times node is visited in trace
     parents: List["Node"] = field(default_factory=list)
+    indices: set = field(default_factory=set)  # numeric indices observed for this node
 
     def __hash__(self) -> int:  # provide hash based on object identity
         return id(self)
@@ -68,29 +68,35 @@ def build_tree(paths: List[str]) -> Node:
         segs = p.split(".")
         # normalize numeric segments by absorbing them into previous segment
         new_segs: List[str] = []
+        # keep track of any numeric indices observed for the previous non-numeric segment
+        indices_map: Dict[int, set] = {}
         for seg in segs:
             if _is_int_segment(seg):
                 if not new_segs:
                     # leading numeric index is unexpected; treat as name
                     new_segs.append(seg)
+                    indices_map.setdefault(len(new_segs) - 1, set())
                 else:
-                    # absorb into previous segment by incrementing a suffix marker
-                    # we don't change the previous name; instead we track repetition
-                    # at the tree insertion time
-                    # store a special marker that will be ignored here
-                    # simply skip the numeric segment
+                    # record the numeric segment against the previous non-numeric segment
+                    pos = len(new_segs) - 1
+                    indices_map.setdefault(pos, set()).add(seg)
+                    # skip inserting the numeric segment into the name path
                     continue
             else:
                 new_segs.append(seg)
+                indices_map.setdefault(len(new_segs) - 1, set())
 
         node = root
-        node.occurrences += 1
-        for seg in new_segs:
+        for i, seg in enumerate(new_segs):
             if seg not in node.children:
                 node.children[seg] = Node(seg, first_seen=idx)
                 node.children[seg].parents.append(node)
             child = node.children[seg]
-            child.occurrences += 1
+            # attach any numeric indices observed for this segment
+            inds = indices_map.get(i, set())
+            if inds:
+                child.indices.update(inds)
+                child.count = max(child.count, len(child.indices))
             node = child
     return root
 
@@ -135,17 +141,28 @@ def prune_leaves(tree: Node) -> Node:
     # Trim last segment from each path (if path has length > 1)
     trimmed = [p[:-1] if len(p) > 1 else p for p in all_paths]
 
-    # Rebuild tree from trimmed paths
+    # Rebuild tree from trimmed paths, preserving index metadata from original tree
     new_root = Node("root")
     for idx, p in enumerate(trimmed):
         node = new_root
-        node.occurrences += 1
+        orig_node = tree
         for seg in p:
             if seg not in node.children:
                 node.children[seg] = Node(seg, first_seen=idx)
                 node.children[seg].parents.append(node)
             child = node.children[seg]
-            child.occurrences += 1
+            # if original tree has metadata for this segment at the corresponding path,
+            # copy numeric index info so repetition derived from indices survives pruning
+            if seg in orig_node.children:
+                orig_child = orig_node.children[seg]
+                if orig_child.indices:
+                    child.indices.update(orig_child.indices)
+                    child.count = max(child.count, len(child.indices))
+                # propagate orig_node down for next segment lookup
+                orig_node = orig_child
+            else:
+                # if path diverged unexpectedly, reset orig_node to a placeholder
+                orig_node = Node(seg)
             node = child
 
     return new_root
@@ -217,20 +234,24 @@ def construct_graph(
         # When squash_name is True, aggregate occurrences across nodes with same name
         nodes = nodes_by_key[key]
         if squash_name:
-            total_occ = sum(n.occurrences for n in nodes)
+            # aggregate repetition counts using only explicit numeric indices
+            total_count = sum(len(n.indices) for n in nodes)
             label_base = nodes[0].name
             label = (
-                f"{label_base} x {total_occ}"
-                if (show_repetition and total_occ > 1)
+                f"{label_base} x {total_count}"
+                if (show_repetition and total_count > 1)
                 else label_base
             )
         else:
             # key is full path_str; find the corresponding single node
             node = nodes[0]
             label_base = node.name
+            # Show repetition ONLY when numeric indices were observed for this node
+            index_count = len(node.indices)
+            rep_count = index_count
             label = (
-                f"{label_base} x {node.occurrences}"
-                if (show_repetition and node.occurrences > 1)
+                f"{label_base} x {rep_count}"
+                if (show_repetition and rep_count > 1)
                 else label_base
             )
         dot.node(nid, label)
@@ -302,9 +323,12 @@ def render_graph(
 
 def save_tree_json(tree: Node, json_path: Path) -> None:
     def node_to_dict(n: Node) -> Dict:
+        # represent repetition counts using distinct numeric indices when present
+        count_val = len(n.indices)
         return {
             "name": n.name,
-            "count": n.occurrences,
+            "count": count_val,
+            "indices": sorted(list(n.indices)),
             "children": [node_to_dict(c) for c in n.children.values()],
         }
 

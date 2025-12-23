@@ -59,3 +59,39 @@ def test_prune_leaves_trims_last_segment():
     # So pruned tree should have child 'a' and 'single' under root
     assert "a" in pruned.children
     assert "single" in pruned.children
+
+
+def test_numeric_index_repetition_is_detected():
+    # Simulate paths that include numeric layer indices
+    paths = [
+        "encoder.layers.0.adaln",
+        "encoder.layers.1.adaln",
+        "encoder.layers.0.transition",
+        "encoder.layers.1.transition",
+    ]
+    tree = build_tree(paths)
+    # 'layers' node under encoder should record two distinct indices (0,1)
+    layers_node = tree.children["encoder"].children["layers"]
+    assert len(layers_node.indices) == 2
+
+    # Graph should show repetition (label contains 'layers x 2') when rendered
+    dot = construct_graph(tree, show_repetition=True, prune_leaves_flag=True)
+    src = dot.source
+    assert "layers x 2" in src or "layers x 2" in src.replace("\n", " ")
+
+
+def test_single_index_not_counted_as_repetition():
+    # same index, different downstream children should NOT imply repetition
+    paths = [
+        "foo.layer.0.a",
+        "foo.layer.0.b",
+    ]
+    tree = build_tree(paths)
+    layers_node = tree.children["foo"].children["layer"]
+    assert len(layers_node.indices) == 1
+    # Even though a segment is visited multiple times, repetition is derived solely from distinct numeric indices
+    dot = construct_graph(tree, show_repetition=True, prune_leaves_flag=True)
+    src = dot.source
+    assert "layer x 2" not in src
+    # and 'layer' should still be present
+    assert "layer" in src
